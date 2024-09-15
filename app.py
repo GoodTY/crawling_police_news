@@ -1,4 +1,9 @@
-# https://jxxngho.tistory.com/102
+''' 참고 자료
+1. 기본 베이스 네이버 뉴스 랭킹에서 데이터 가져오기 - https://jxxngho.tistory.com/102 
+2. csv 파일로 변경해 저장하기 - https://yensr.tistory.com/58
+'''
+
+
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
