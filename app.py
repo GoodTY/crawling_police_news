@@ -45,6 +45,9 @@ for head in journalism_list:
     # print(href)
     url_news.append(href)
 
+
+
+
 for head in journalism_list:
     tag_name = head.find_element(By.TAG_NAME,'a') # a태그 찾아서
     # print(tag_name)
@@ -54,6 +57,9 @@ for head in journalism_list:
 
 for url in url_news:
     driver.get(url)
+
+    news_date = driver.find_element(By.XPATH,'//*[@id="ct"]/div[2]/div[4]/strong') # 랭킹 일자 가져오기
+    # print(news_date.text)
 
     press_name = driver.find_element(By.XPATH,'/html/body/div[2]/div/section[1]/header/div[4]/div/div[2]/div[1]/div/h3')
     # print(press_name.text) # 언론사 이름 출력
@@ -65,7 +71,10 @@ for url in url_news:
      tag_name = rank.find_element(By.TAG_NAME,'a') # a태그 찾아서
      href = tag_name.get_attribute('href') # 그 안에 href속성
      url_top10.append(href) # 들어갈 링크 주소 10개 리스트에 저장
-     press_company.append(press_name.text)
+
+     press_company.append(press_name.text) # csv파일에 넣을 언론사 이름 데이터 list에 추가
+
+     press_date.append(news_date.text) # csv파일에 넣을 일자 데이터 list에 추가
 
     for i in range(0,len(url_top10)): # 각 언론사별 1~10위 뉴스
         driver.get(url_top10[i]) # 저장한 링크 들어간다.
@@ -74,6 +83,6 @@ for url in url_news:
         press_ranking.append(i+1)
         press_title.append(news_title.text)
 
-data = {"press_name" : press_company,"ranking" : press_ranking,"title" : press_title}
+data = {"press_date": press_date, "press_name" : press_company,"ranking" : press_ranking,"title" : press_title}
 df = pd.DataFrame(data)
-df.to_csv("./result_data/test.csv", encoding = "utf-8-sig")
+df.to_csv(f'./result_data/test.csv', encoding = "utf-8-sig")
