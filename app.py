@@ -8,7 +8,9 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from datetime import datetime
 import pandas as pd
+
 
 # 크롬 웹드라이버 실행 경로
 path = 'chromedriver.exe'
@@ -85,4 +87,6 @@ for url in url_news:
 
 data = {"press_date": press_date, "press_name" : press_company,"ranking" : press_ranking,"title" : press_title}
 df = pd.DataFrame(data)
-df.to_csv(f'./result_data/test.csv', encoding = "utf-8-sig")
+current_date = datetime.now().strftime("%m월 %d일") # 파일 이름 동적으로 만들기
+file_name = f'./result_data/{current_date} 랭킹 기사.csv' # 파일 이름 동적으로 만들기
+df.to_csv(file_name, encoding = "utf-8-sig")
