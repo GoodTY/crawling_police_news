@@ -23,6 +23,7 @@ press_company = [] #신문사 이름
 press_ranking = [] # 기사 순위
 press_title = [] # 기사 제목
 press_date = [] # 기사 발행일
+press_url = [] # 기사 url
 
 # 크롬 드라이버 사용
 service = Service(executable_path=path)
@@ -65,6 +66,7 @@ for url in url_news:
 
     press_name = driver.find_element(By.XPATH,'/html/body/div[2]/div/section[1]/header/div[4]/div/div[2]/div[1]/div/h3')
     # print(press_name.text) # 언론사 이름 출력
+
     rank = driver.find_element(By.XPATH, '//*[@id="ct"]/div[2]/div[2]/ul') # 1~10 랭킹 xpath
     rank_url = rank.find_elements(By.CLASS_NAME,'as_thumb') # 뉴스 타이틀 
 
@@ -80,12 +82,13 @@ for url in url_news:
 
     for i in range(0,len(url_top10)): # 각 언론사별 1~10위 뉴스
         driver.get(url_top10[i]) # 저장한 링크 들어간다.
+        press_url.append(href)
         news_title = driver.find_element(By.XPATH,'//*[@id="title_area"]/span')
         # print('{}등, {}'.format(i+1,news_title.text))
-        press_ranking.append(i+1)
-        press_title.append(news_title.text)
+        press_ranking.append(i+1) # 뉴스랭킹
+        press_title.append(news_title.text) # 뉴스 url
 
-data = {"press_date": press_date, "press_name" : press_company,"ranking" : press_ranking,"title" : press_title}
+data = {"press_date": press_date, "press_name" : press_company,"ranking" : press_ranking,"title" : press_title,"url" : press_url}
 df = pd.DataFrame(data)
 current_date = datetime.now().strftime("%m월 %d일") # 파일 이름 동적으로 만들기
 file_name = f'./result_data/{current_date} 랭킹 기사.csv' # 파일 이름 동적으로 만들기
